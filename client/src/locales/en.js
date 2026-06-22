@@ -4,6 +4,7 @@ export default {
     overview: 'Overview',
     inventory: 'Inventory',
     orders: 'Orders',
+    restocking: 'Restocking',
     finance: 'Finance',
     demandForecast: 'Demand Forecast',
     companyName: 'Catalyst Components',
@@ -129,6 +130,41 @@ export default {
     }
   },
 
+  // Restocking
+  restocking: {
+    title: 'Restocking',
+    description: 'Set a budget and get recommended items to restock from the demand forecast',
+    budgetTitle: 'Available Budget',
+    budgetHelp: 'Drag to set how much you can spend. Recommendations update automatically.',
+    recommendationsTitle: 'Recommended Items',
+    summary: {
+      recommendedItems: 'Recommended Items',
+      totalCost: 'Total Cost',
+      budgetRemaining: 'Budget Remaining',
+      budgetUsed: 'Budget Used'
+    },
+    table: {
+      sku: 'SKU',
+      itemName: 'Item Name',
+      category: 'Category',
+      trend: 'Trend',
+      quantity: 'Recommended Qty',
+      unitCost: 'Unit Cost',
+      lineCost: 'Line Cost',
+      leadTime: 'Lead Time',
+      recommended: 'In Budget'
+    },
+    days: 'days',
+    placeOrder: 'Place Order',
+    placing: 'Placing order...',
+    noRecommendations: 'No items fit within the selected budget. Increase the budget to see recommendations.',
+    orderSuccess: 'Restocking order {orderNumber} submitted successfully.',
+    orderError: 'Failed to place restocking order. Please try again.',
+    viewInOrders: 'View in Orders',
+    included: 'Included',
+    overBudget: 'Over budget'
+  },
+
   // Finance/Spending
   finance: {
     title: 'Finance Dashboard',
@@ -204,6 +240,7 @@ export default {
     shipped: 'Shipped',
     processing: 'Processing',
     backordered: 'Backordered',
+    submitted: 'Submitted',
     inStock: 'In Stock',
     lowStock: 'Low Stock',
     adequate: 'Adequate'
