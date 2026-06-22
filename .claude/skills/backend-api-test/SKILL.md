@@ -13,17 +13,18 @@ All backend tests must be placed in `tests/backend/`:
 
 ```
 tests/backend/
-├── conftest.py           # Shared fixtures and test client setup
-├── test_inventory.py     # Inventory endpoint tests
-├── test_orders.py        # Orders endpoint tests
-├── test_dashboard.py     # Dashboard endpoint tests
-└── test_misc_endpoints.py # Other endpoint tests
+├── conftest.py            # Shared fixtures and test client setup
+├── test_inventory.py      # Inventory endpoint tests
+├── test_dashboard.py      # Dashboard endpoint tests
+└── test_misc_endpoints.py # Demand, backlog, spending, root tests
 ```
+
+There is currently **no `test_orders.py`** — the `/api/orders` endpoints are untested. A new orders suite (`TestOrdersEndpoints`) is the natural place to start when adding coverage.
 
 ## File Organization
 
 ### 1. File Naming
-- Use `test_<feature>.py` format (e.g., `test_inventory.py`, `test_orders.py`)
+- Use `test_<feature>.py` format (e.g., `test_inventory.py`, `test_dashboard.py`)
 - Group related endpoints in the same file
 - Create new files for distinct API feature areas
 
@@ -374,9 +375,9 @@ assert abs(calculated - expected) < 0.01
 ### Categories
 - Circuit Boards
 - Sensors
+- Actuators
+- Controllers
 - Power Supplies
-- Connectors
-- Mechanical Components
 
 ### Order Statuses
 - Delivered
@@ -404,24 +405,23 @@ assert abs(calculated - expected) < 0.01
 
 ## Running Tests
 
+Run from the `tests/` directory — `pytest.ini` sets `testpaths = backend`, so invoking from elsewhere breaks path resolution.
+
 ```bash
 # Run all backend tests
-pytest tests/backend/
+cd tests && uv run pytest -v
 
 # Run specific test file
-pytest tests/backend/test_orders.py
+cd tests && uv run pytest backend/test_inventory.py
 
 # Run specific test class
-pytest tests/backend/test_orders.py::TestOrdersEndpoints
+cd tests && uv run pytest backend/test_inventory.py::TestInventoryEndpoints
 
 # Run specific test method
-pytest tests/backend/test_orders.py::TestOrdersEndpoints::test_get_all_orders
-
-# Run with verbose output
-pytest tests/backend/ -v
+cd tests && uv run pytest backend/test_inventory.py::TestInventoryEndpoints::test_get_all_inventory
 
 # Run with coverage
-pytest tests/backend/ --cov=server
+cd tests && uv run pytest --cov=../server --cov-report=html
 ```
 
 ## Example: Complete Test File Template

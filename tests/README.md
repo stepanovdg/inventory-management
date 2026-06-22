@@ -6,15 +6,16 @@ Comprehensive test suite for the Factory Inventory Management System backend API
 
 ```
 tests/
-├── pytest.ini          # Pytest configuration
+├── pytest.ini          # Pytest configuration (testpaths = backend)
 ├── backend/            # Backend API tests
-│   ├── conftest.py     # Test fixtures and configuration
+│   ├── conftest.py            # Test fixtures and configuration
 │   ├── test_inventory.py      # Inventory endpoint tests (10 tests)
-│   ├── test_orders.py         # Orders endpoint tests (15 tests)
 │   ├── test_dashboard.py      # Dashboard endpoint tests (13 tests)
-│   └── test_misc_endpoints.py # Demand, backlog, spending tests (13 tests)
+│   └── test_misc_endpoints.py # Demand, backlog, spending, root tests (17 tests)
 └── README.md           # This file
 ```
+
+> Note: there is **no `test_orders.py`** and the `/api/orders` endpoints currently have **no dedicated test coverage**. Adding an orders suite is the obvious gap to close.
 
 ## Running Tests
 
@@ -50,7 +51,7 @@ uv run pytest --cov=../server --cov-report=html
 
 ## Test Coverage
 
-**Total: 51 tests** covering all API endpoints:
+**Total: 40 tests** across 3 files:
 
 ### Inventory Endpoints (10 tests)
 - ✓ Get all inventory items
@@ -62,18 +63,6 @@ uv run pytest --cov=../server --cov-report=html
 - ✓ Validate field structure
 - ✓ Validate data types
 
-### Orders Endpoints (15 tests)
-- ✓ Get all orders
-- ✓ Filter by warehouse, category, status
-- ✓ Filter by month and quarter
-- ✓ Multiple filter combinations
-- ✓ Get specific order by ID
-- ✓ Handle non-existent orders (404)
-- ✓ Validate order items structure
-- ✓ Validate status values
-- ✓ Validate date formats
-- ✓ Validate total value calculations
-
 ### Dashboard Endpoints (13 tests)
 - ✓ Get dashboard summary
 - ✓ Validate data types and non-negative values
@@ -84,11 +73,13 @@ uv run pytest --cov=../server --cov-report=html
   - Low stock items calculation
   - Total inventory value calculation
 
-### Miscellaneous Endpoints (13 tests)
-- **Demand Forecasts (3 tests)**
+### Miscellaneous Endpoints (17 tests, in `test_misc_endpoints.py`)
+- **Demand Forecasts (5 tests)**
   - ✓ Get demand forecasts
   - ✓ Validate trend values
   - ✓ Validate non-negative values
+  - ✓ Stable items have small (< 2%) changes
+  - ✓ Expected new forecast items are present
 
 - **Backlog Items (4 tests)**
   - ✓ Get backlog items
@@ -96,9 +87,11 @@ uv run pytest --cov=../server --cov-report=html
   - ✓ Validate quantity logic
   - ✓ Validate days delayed
 
-- **Spending Data (4 tests)**
+- **Spending Data (6 tests)**
   - ✓ Get spending summary
   - ✓ Get monthly spending
+  - ✓ Monthly spending has all cost categories
+  - ✓ Monthly spending has variety
   - ✓ Get category spending
   - ✓ Get recent transactions
 

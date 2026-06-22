@@ -369,7 +369,9 @@ export const api = {
 
 **Use in component:**
 ```javascript
-import { api } from '@/api'
+// NOTE: no '@' path alias is configured (no resolve.alias in vite.config.js).
+// Use relative imports, e.g. '../api' from views/, './api' from src root.
+import { api } from '../api'
 
 const loadItems = async () => {
   const filters = getCurrentFilters()
