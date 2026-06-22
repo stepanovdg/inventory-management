@@ -1,0 +1,63 @@
+# Factory Inventory Management System — container orchestration
+#
+# Two profiles:
+#   prod  -> built, production-style images (nginx static frontend + uvicorn backend)
+#   dev   -> hot-reloading dev servers with the source bind-mounted
+#
+# Usage:
+#   docker compose --profile prod up --build      # http://localhost:3000  (API :8001)
+#   docker compose --profile dev  up --build      # http://localhost:3000  (API :8001)
+#   docker compose --profile prod down
+#
+# The browser talks to the API directly at http://localhost:8001 in both profiles.
+
+services:
+  # ---------- Production ----------
+  backend:
+    build:
+      context: ./server
+      target: prod
+    image: inventory-backend:prod
+    ports:
+      - "8001:8001"
+    profiles: ["prod"]
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./client
+      target: prod
+    image: inventory-frontend:prod
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    profiles: ["prod"]
+    restart: unless-stopped
+
+  # ---------- Development (hot reload) ----------
+  backend-dev:
+    build:
+      context: ./server
+      target: dev
+    image: inventory-backend:dev
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./server:/app
+    profiles: ["dev"]
+
+  frontend-dev:
+    build:
+      context: ./client
+      target: dev
+    image: inventory-frontend:dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/app
+      # keep the image's installed node_modules (don't shadow with host)
+      - /app/node_modules
+    depends_on:
+      - backend-dev
+    profiles: ["dev"]

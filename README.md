@@ -46,6 +46,32 @@ npm install
 npm run dev
 ```
 
+## Docker
+
+The app is containerized with multi-stage builds and a single `docker-compose.yml`
+that exposes two profiles. Both serve the frontend on `http://localhost:3000` and
+the API on `http://localhost:8001` (the browser calls the API directly).
+
+**Production** (nginx serves the built SPA, uvicorn serves the API):
+```bash
+docker compose --profile prod up --build
+# Frontend: http://localhost:3000
+# API:      http://localhost:8001  (docs at /docs)
+docker compose --profile prod down
+```
+
+**Development** (hot reload, source bind-mounted):
+```bash
+docker compose --profile dev up --build
+# Edits under client/ and server/ reload automatically
+```
+
+Files:
+- `server/Dockerfile` — `prod` (uvicorn) and `dev` (uvicorn `--reload`) targets
+- `client/Dockerfile` — `build` → `prod` (nginx) and a `dev` (Vite) target
+- `client/nginx.conf` — serves the SPA with history-mode fallback
+- `docker-compose.yml` — `prod` and `dev` profiles
+
 ## API Endpoints
 
 All endpoints support optional filtering via query params: `warehouse`, `category`, `status`, `month`
