@@ -2,7 +2,9 @@
 
 ## Test Coverage Overview
 
-All backend API tests are passing with **55 tests** covering the entire application functionality.
+All backend API tests are passing with **40 tests** across 3 files (`test_dashboard.py`, `test_inventory.py`, `test_misc_endpoints.py`).
+
+> Gap: the `/api/orders` endpoints have **no dedicated test suite** (there is no `test_orders.py`). Orders data is only exercised indirectly via the dashboard pending-orders/value calculations.
 
 ## Test Suites
 
@@ -30,21 +32,7 @@ All backend API tests are passing with **55 tests** covering the entire applicat
 - ✅ Quantity and cost type validation
 - ✅ Non-negative value validation
 
-### 3. Orders Endpoints (15 tests)
-- ✅ Get all orders
-- ✅ Filter by warehouse, category, status, month
-- ✅ Quarter filtering (Q1-2025)
-- ✅ Multiple filter combinations
-- ✅ Power Supplies category orders
-- ✅ Get specific order by ID
-- ✅ 404 handling for non-existent orders
-- ✅ Order items structure validation
-- ✅ Valid status values (Delivered, Shipped, Processing, Backordered)
-- ✅ Date format validation (ISO format)
-- ✅ Delivered orders have actual_delivery date
-- ✅ **Actual calculation**: Total value = sum(quantity × unit_price)
-
-### 4. Demand Forecast Endpoints (5 tests)
+### 3. Demand Forecast Endpoints (5 tests)
 - ✅ Get demand forecasts
 - ✅ Valid trend values (increasing, stable, decreasing)
 - ✅ Non-negative demand values
@@ -52,13 +40,13 @@ All backend API tests are passing with **55 tests** covering the entire applicat
 - ✅ **NEW**: At least 5 stable demand items exist
 - ✅ **NEW**: New items (Temperature Sensor Module, Logic Controller Board) are present and stable
 
-### 5. Backlog Endpoints (4 tests)
+### 4. Backlog Endpoints (4 tests)
 - ✅ Get backlog items
 - ✅ Valid priority values (high, medium, low)
 - ✅ Non-negative quantities
 - ✅ Non-negative days delayed
 
-### 6. Spending Endpoints (6 tests)
+### 5. Spending Endpoints (6 tests)
 - ✅ Get spending summary
 - ✅ Get monthly spending data
 - ✅ **NEW**: All cost categories present (procurement, operational, labor, overhead)
@@ -66,7 +54,7 @@ All backend API tests are passing with **55 tests** covering the entire applicat
 - ✅ Get category spending
 - ✅ Get recent transactions
 
-### 7. Root Endpoint (2 tests)
+### 6. Root Endpoint (2 tests)
 - ✅ Root endpoint returns API info
 - ✅ Message and version structure
 
@@ -97,13 +85,13 @@ Recent additions are fully tested:
 
 ```bash
 cd tests
-python -m pytest backend/ -v
+uv run pytest -v
 ```
 
 ## Test Results
-- **Total Tests**: 55
-- **Passed**: 55 ✅
+- **Total Tests**: 40
+- **Passed**: 40 ✅
 - **Failed**: 0
-- **Warnings**: 3 (configuration-related, non-critical)
+- **Warnings**: 2 (pytest-asyncio config options; non-critical)
 
 All tests validate the **actual implementation** without cheating or hardcoding success values!

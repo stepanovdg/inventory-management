@@ -60,7 +60,7 @@ All endpoints support optional filtering via query params: `warehouse`, `categor
 ## Demo Data
 
 Mock data includes:
-- Inventory items (Circuit Boards, Sensors, Actuators, Controllers)
+- Inventory items (Circuit Boards, Sensors, Actuators, Controllers, Power Supplies)
 - Orders spanning 12 months (Delivered, Shipped, Processing, Backordered)
 - Demand forecasts with trends
 - Backlog items
