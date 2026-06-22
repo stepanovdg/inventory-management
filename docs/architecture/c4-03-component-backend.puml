@@ -1,0 +1,29 @@
+@startuml c4-03-component-backend
+' C4 Model - Level 3: Component (Backend API container)
+!include ./c4lib/C4_Component.puml
+
+!pragma layout smetana
+LAYOUT_WITH_LEGEND()
+
+title Component Diagram — REST API (FastAPI backend)
+
+Container(spa, "Single-Page Application", "Vue 3", "Browser client")
+ContainerDb(data, "Mock Data Store", "JSON files", "server/data/*.json")
+
+Container_Boundary(api, "REST API (FastAPI)") {
+    Component(app, "FastAPI Application", "FastAPI app + CORS middleware", "Wires routes, allows cross-origin requests from the SPA")
+    Component(routes, "Endpoint Handlers", "main.py route functions", "/api/inventory, /api/orders, /api/demand, /api/backlog, /api/dashboard/summary, /api/spending/*, /api/reports/*")
+    Component(filters, "Filtering & Aggregation", "apply_filters(), filter_by_month(), QUARTER_MAP", "In-memory filtering by warehouse/category/status and month/quarter; computes summary, quarterly and monthly aggregates")
+    Component(models, "Pydantic Schemas", "BaseModel classes", "InventoryItem, Order, DemandForecast, BacklogItem, PurchaseOrder — validate & serialize responses")
+    Component(loader, "Mock Data Loader", "mock_data.py", "Reads JSON files into module-level lists/dicts at import time")
+}
+
+Rel(spa, app, "Sends HTTP requests to", "JSON / :8001")
+Rel(app, routes, "Dispatches to")
+Rel(routes, filters, "Applies query-param filters with")
+Rel(routes, models, "Validates & serializes via", "response_model")
+Rel(routes, loader, "Reads in-memory datasets from")
+Rel(loader, data, "Loads at startup", "json.load")
+
+SHOW_LEGEND()
+@enduml

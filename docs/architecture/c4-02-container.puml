@@ -1,0 +1,24 @@
+@startuml c4-02-container
+' C4 Model - Level 2: Container
+' Factory Inventory Management System
+!include ./c4lib/C4_Container.puml
+
+!pragma layout smetana
+LAYOUT_WITH_LEGEND()
+
+title Container Diagram — Factory Inventory Management System
+
+Person(user, "Operations / Warehouse Staff", "Uses the web application")
+
+System_Boundary(ims, "Factory Inventory Management System") {
+    Container(spa, "Single-Page Application", "Vue 3 + Vite, Vue Router", "Renders dashboards, inventory, orders, demand, spending and reports. Holds raw data in refs and derives views with computed properties.")
+    Container(api, "REST API", "Python, FastAPI, Uvicorn", "Exposes /api/* endpoints. Applies warehouse/category/status/month filters in memory and validates responses with Pydantic models.")
+    ContainerDb(data, "Mock Data Store", "JSON files on disk (server/data/*.json)", "inventory, orders, demand, backlog, spending, transactions, purchase orders. Loaded once into memory at startup.")
+}
+
+Rel(user, spa, "Interacts with", "HTTPS")
+Rel(spa, api, "Calls REST endpoints via axios", "JSON / HTTP :8001")
+Rel(api, data, "Loads at startup via mock_data.py", "json.load (read-only)")
+
+SHOW_LEGEND()
+@enduml

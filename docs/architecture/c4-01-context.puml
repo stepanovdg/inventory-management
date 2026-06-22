@@ -1,0 +1,23 @@
+@startuml c4-01-context
+' C4 Model - Level 1: System Context
+' Factory Inventory Management System
+!include ./c4lib/C4_Context.puml
+
+!pragma layout smetana
+LAYOUT_WITH_LEGEND()
+
+title System Context — Factory Inventory Management System
+
+Person(opsManager, "Operations Manager", "Monitors inventory, orders, demand and spending across factory warehouses")
+Person(warehouseStaff, "Warehouse / Procurement Staff", "Reviews backlog, raises purchase orders, tracks fulfillment")
+
+System(ims, "Factory Inventory Management System", "Single-page web application for inventory tracking, order management, demand forecasting and spend analytics. Demo with in-memory mock data.")
+
+System_Ext(browser, "Web Browser", "Chromium / Firefox / Safari rendering the Vue 3 SPA")
+
+Rel(opsManager, browser, "Views dashboards & analytics using")
+Rel(warehouseStaff, browser, "Manages backlog & purchase orders using")
+Rel(browser, ims, "Loads SPA and calls REST API over", "HTTPS / JSON")
+
+SHOW_LEGEND()
+@enduml
