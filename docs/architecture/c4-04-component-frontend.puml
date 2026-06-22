@@ -1,0 +1,34 @@
+@startuml c4-04-component-frontend
+' C4 Model - Level 3: Component (SPA container)
+!include ./c4lib/C4_Component.puml
+
+!pragma layout smetana
+LAYOUT_WITH_LEGEND()
+
+title Component Diagram — Single-Page Application (Vue 3 frontend)
+
+Person(user, "User", "Operations / Warehouse staff")
+Container(api, "REST API", "FastAPI", "Backend on :8001")
+
+Container_Boundary(spa, "Single-Page Application (Vue 3)") {
+    Component(shell, "App Shell", "App.vue", "Top nav, router-view, global FilterBar, profile & language switchers")
+    Component(router, "Router", "vue-router", "Maps routes to views: / inventory orders demand spending reports")
+    Component(views, "View Pages", "views/*.vue", "Dashboard, Inventory, Orders, Demand, Spending, Reports — load data on mount, derive display state via computed")
+    Component(comps, "UI Components", "components/*.vue", "FilterBar, detail modals, ProfileMenu, TasksModal, LanguageSwitcher")
+    Component(composables, "Composables", "composables/*.js", "useFilters (shared filter state), useAuth, useI18n")
+    Component(apiClient, "API Client", "api.js (axios)", "Builds query strings from active filters and calls /api/* endpoints")
+    Component(utils, "Utilities & Locales", "utils/currency.js, locales/*.js", "Currency formatting and en/ja translations")
+}
+
+Rel(user, shell, "Interacts with", "HTTPS")
+Rel(shell, router, "Renders active view through")
+Rel(router, views, "Mounts")
+Rel(views, comps, "Compose")
+Rel(views, composables, "Read filter state from")
+Rel(comps, composables, "Bind filters via")
+Rel(views, apiClient, "Request data through")
+Rel(views, utils, "Format values with")
+Rel(apiClient, api, "GET /api/* with filter params", "JSON / HTTP")
+
+SHOW_LEGEND()
+@enduml
