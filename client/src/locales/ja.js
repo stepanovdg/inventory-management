@@ -4,6 +4,7 @@ export default {
     overview: '概要',
     inventory: '在庫',
     orders: '注文',
+    restocking: '補充',
     finance: '財務',
     demandForecast: '需要予測',
     companyName: '触媒コンポーネンツ',
@@ -129,6 +130,41 @@ export default {
     }
   },
 
+  // Restocking
+  restocking: {
+    title: '補充',
+    description: '予算を設定して、需要予測から補充する推奨アイテムを取得します',
+    budgetTitle: '利用可能な予算',
+    budgetHelp: 'ドラッグして使用可能な金額を設定します。推奨は自動的に更新されます。',
+    recommendationsTitle: '推奨アイテム',
+    summary: {
+      recommendedItems: '推奨アイテム',
+      totalCost: '合計コスト',
+      budgetRemaining: '残りの予算',
+      budgetUsed: '使用済み予算'
+    },
+    table: {
+      sku: 'SKU',
+      itemName: 'アイテム名',
+      category: 'カテゴリー',
+      trend: '傾向',
+      quantity: '推奨数量',
+      unitCost: '単価',
+      lineCost: '小計',
+      leadTime: 'リードタイム',
+      recommended: '予算内'
+    },
+    days: '日',
+    placeOrder: '注文する',
+    placing: '注文中...',
+    noRecommendations: '選択した予算内に収まるアイテムがありません。予算を増やして推奨を表示してください。',
+    orderSuccess: '補充注文 {orderNumber} が正常に送信されました。',
+    orderError: '補充注文の送信に失敗しました。もう一度お試しください。',
+    viewInOrders: '注文で表示',
+    included: '含む',
+    overBudget: '予算超過'
+  },
+
   // Finance/Spending
   finance: {
     title: '財務ダッシュボード',
@@ -204,6 +240,7 @@ export default {
     shipped: '出荷済み',
     processing: '処理中',
     backordered: 'バックオーダー',
+    submitted: '送信済み',
     inStock: '在庫あり',
     lowStock: '在庫僅少',
     adequate: '適量'
